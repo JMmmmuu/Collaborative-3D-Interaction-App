@@ -18,7 +18,7 @@ class object: Object {
     @objc dynamic var angleAtOrigin_y: Double = 0.0
     @objc dynamic var angleAtOrigin_z: Double = 0.0
     
-    var room = LinkingObjects(fromType: roomInfo.self, property: "object")
+    var room = LinkingObjects(fromType: roomInfo.self, property: "objects")
 }
 
 class roomInfo: Object {
