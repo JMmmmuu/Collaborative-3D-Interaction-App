@@ -7,3 +7,12 @@
 //
 
 import Foundation
+
+class object {
+    var position: [Double] = [0, 0, 0]
+    var angleAtOrigin: [Double] = [0, 0, 0]
+}
+
+class roomInfo {
+    var objects = [object]()
+}
