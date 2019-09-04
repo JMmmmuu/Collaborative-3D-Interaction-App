@@ -14,5 +14,6 @@ class object {
 }
 
 class roomInfo {
+    var title: String = ""
     var objects = [object]()
 }

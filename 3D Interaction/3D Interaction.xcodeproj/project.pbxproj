@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		48A2A0B7E495B21EE3E4AC5B /* Pods_3D_Interaction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DB99B4FD14FECFDFF5B54D6 /* Pods_3D_Interaction.framework */; };
 		53EDC874231E39E90080FF0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EDC873231E39E90080FF0B /* AppDelegate.swift */; };
 		53EDC876231E39E90080FF0B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 53EDC875231E39E90080FF0B /* art.scnassets */; };
 		53EDC878231E39E90080FF0B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EDC877231E39E90080FF0B /* ViewController.swift */; };
@@ -14,6 +15,7 @@
 		53EDC87D231E39EA0080FF0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53EDC87C231E39EA0080FF0B /* Assets.xcassets */; };
 		53EDC880231E39EA0080FF0B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53EDC87E231E39EA0080FF0B /* LaunchScreen.storyboard */; };
 		53EDC88A231E3AC60080FF0B /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EDC889231E3AC60080FF0B /* TableViewController.swift */; };
+		53EDC88F231F6A730080FF0B /* dataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EDC88E231F6A730080FF0B /* dataModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,10 @@
 		53EDC87F231E39EA0080FF0B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		53EDC881231E39EA0080FF0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		53EDC889231E3AC60080FF0B /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		53EDC88E231F6A730080FF0B /* dataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dataModel.swift; sourceTree = "<group>"; };
+		7E2A1BA7FEED6BF9F49C4077 /* Pods-3D Interaction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-3D Interaction.release.xcconfig"; path = "Target Support Files/Pods-3D Interaction/Pods-3D Interaction.release.xcconfig"; sourceTree = "<group>"; };
+		8DB99B4FD14FECFDFF5B54D6 /* Pods_3D_Interaction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_3D_Interaction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		923C90B026EC7BC7A2B447E9 /* Pods-3D Interaction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-3D Interaction.debug.xcconfig"; path = "Target Support Files/Pods-3D Interaction/Pods-3D Interaction.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,17 +39,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48A2A0B7E495B21EE3E4AC5B /* Pods_3D_Interaction.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5363C5BD231F99F4004F40E0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				53EDC87C231E39EA0080FF0B /* Assets.xcassets */,
+				53EDC87E231E39EA0080FF0B /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		53EDC867231E39E90080FF0B = {
 			isa = PBXGroup;
 			children = (
 				53EDC872231E39E90080FF0B /* 3D Interaction */,
 				53EDC871231E39E90080FF0B /* Products */,
+				9F6E09D327A6698B66CEADB0 /* Pods */,
+				A7CAEAF7402608F7139E8CDD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,10 +78,10 @@
 			children = (
 				53EDC873231E39E90080FF0B /* AppDelegate.swift */,
 				53EDC875231E39E90080FF0B /* art.scnassets */,
+				53EDC88D231F6A2E0080FF0B /* Models */,
 				53EDC888231E39F90080FF0B /* Views */,
 				53EDC887231E39F20080FF0B /* Controllers */,
-				53EDC87C231E39EA0080FF0B /* Assets.xcassets */,
-				53EDC87E231E39EA0080FF0B /* LaunchScreen.storyboard */,
+				5363C5BD231F99F4004F40E0 /* Supporting Files */,
 				53EDC881231E39EA0080FF0B /* Info.plist */,
 			);
 			path = "3D Interaction";
@@ -86,6 +104,31 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		53EDC88D231F6A2E0080FF0B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				53EDC88E231F6A730080FF0B /* dataModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9F6E09D327A6698B66CEADB0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				923C90B026EC7BC7A2B447E9 /* Pods-3D Interaction.debug.xcconfig */,
+				7E2A1BA7FEED6BF9F49C4077 /* Pods-3D Interaction.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		A7CAEAF7402608F7139E8CDD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8DB99B4FD14FECFDFF5B54D6 /* Pods_3D_Interaction.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -93,9 +136,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 53EDC884231E39EA0080FF0B /* Build configuration list for PBXNativeTarget "3D Interaction" */;
 			buildPhases = (
+				087B42E0E8C63DF71A25DDED /* [CP] Check Pods Manifest.lock */,
 				53EDC86C231E39E90080FF0B /* Sources */,
 				53EDC86D231E39E90080FF0B /* Frameworks */,
 				53EDC86E231E39E90080FF0B /* Resources */,
+				3371A6E8B686FDCBF46A39A7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -153,12 +198,55 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		087B42E0E8C63DF71A25DDED /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-3D Interaction-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3371A6E8B686FDCBF46A39A7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-3D Interaction/Pods-3D Interaction-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-3D Interaction/Pods-3D Interaction-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-3D Interaction/Pods-3D Interaction-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		53EDC86C231E39E90080FF0B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				53EDC878231E39E90080FF0B /* ViewController.swift in Sources */,
+				53EDC88F231F6A730080FF0B /* dataModel.swift in Sources */,
 				53EDC88A231E3AC60080FF0B /* TableViewController.swift in Sources */,
 				53EDC874231E39E90080FF0B /* AppDelegate.swift in Sources */,
 			);
@@ -304,6 +392,7 @@
 		};
 		53EDC885231E39EA0080FF0B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 923C90B026EC7BC7A2B447E9 /* Pods-3D Interaction.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -322,6 +411,7 @@
 		};
 		53EDC886231E39EA0080FF0B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7E2A1BA7FEED6BF9F49C4077 /* Pods-3D Interaction.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

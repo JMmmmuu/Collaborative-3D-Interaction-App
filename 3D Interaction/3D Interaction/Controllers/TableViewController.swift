@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import SwipeCellKit
 
-class TableViewController: UITableViewController {
+class TableViewController: UITableViewController, SwipeTableViewCellDelegate {
+
+    
+    var rooms = [roomInfo]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,10 +25,8 @@ class TableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return rooms.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -32,15 +34,48 @@ class TableViewController: UITableViewController {
         return 0
     }
 
-    /*
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "Create New Room", message: "", preferredStyle: .alert)
+        var textField = UITextField()
+        
+        let action = UIAlertAction(title: "Create room", style: .default) { (action) in
+            if let text: String = textField.text {
+                let newRoom = roomInfo()
+                newRoom.title = text
+                self.rooms.append(newRoom)
+            }
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create New AR Interaction Room"
+            textField = alertTextField
+        }
+        
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
+    // MARK: - TableView Delegate Methods
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! SwipeTableViewCell
+        cell.delegate = self
+        
         return cell
     }
-    */
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else {return nil}
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { (action, indexPath) in
+            // delete room
+        }
+        
+        deleteAction.image = UIImage(named: "trash-circle")
+        
+        return [deleteAction]
+    }
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -58,7 +93,7 @@ class TableViewController: UITableViewController {
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
     */
 
