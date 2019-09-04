@@ -8,11 +8,12 @@
 
 import UIKit
 import SwipeCellKit
+import RealmSwift
 
 class TableViewController: UITableViewController, SwipeTableViewCellDelegate {
-
     
-    var rooms = [roomInfo]()
+    var rooms = Results<roomInfo>?
+    let realm = try! Realm()
 
     override func viewDidLoad() {
         super.viewDidLoad()

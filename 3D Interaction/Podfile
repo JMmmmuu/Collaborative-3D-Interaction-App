@@ -9,5 +9,6 @@ target '3D Interaction' do
 
   pod "SwipeCellKit"
   pod "ChameleonFramework"
+  pod "RealmSwift"
 
 end

@@ -7,13 +7,21 @@
 //
 
 import Foundation
+import RealmSwift
 
-class object {
-    var position: [Double] = [0, 0, 0]
-    var angleAtOrigin: [Double] = [0, 0, 0]
+class object: Object {
+    @objc dynamic var x: Double = 0.0
+    @objc dynamic var y: Double = 0.0
+    @objc dynamic var z: Double = 0.0
+    
+    @objc dynamic var angleAtOrigin_x: Double = 0.0
+    @objc dynamic var angleAtOrigin_y: Double = 0.0
+    @objc dynamic var angleAtOrigin_z: Double = 0.0
+    
+    var room = LinkingObjects(fromType: roomInfo.self, property: "object")
 }
 
-class roomInfo {
-    var title: String = ""
-    var objects = [object]()
+class roomInfo: Object {
+    @objc dynamic var title: String = ""
+    let objects = List<object>()
 }
