@@ -16,6 +16,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var objects: Results<object>?
     let realm = try! Realm()
     var selectedObject: object?
+    
+    var roomTitle: String = ""{
+        willSet {
+            self.navigationItem.title = newValue
+        }
+    }
 
     @IBOutlet var sceneView: ARSCNView!
     

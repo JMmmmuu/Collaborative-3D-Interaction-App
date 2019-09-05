@@ -71,6 +71,13 @@ class TableViewController: SwipeTableViewController {
         performSegue(withIdentifier: "goToCamera", sender: self)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! ViewController
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.roomTitle = rooms?[indexPath.row].title ?? ""
+        }
+    }
 
     // MARK: - Data Manipulating Methods
     func saveData(_ roomInfo: roomInfo) {
