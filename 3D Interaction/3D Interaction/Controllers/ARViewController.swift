@@ -11,7 +11,7 @@ import SceneKit
 import ARKit
 import RealmSwift
 
-class ViewController: UIViewController, ARSCNViewDelegate {
+class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDelegate {
     
     var objects: Results<object>?
     let realm = try! Realm()
@@ -38,6 +38,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
 
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+    let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+    let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+    var panningWithLongPress: Bool = false
 
     @IBOutlet var sceneView: ARSCNView!
     
@@ -56,14 +60,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         sceneView.autoenablesDefaultLighting = true
         
+        
         // Touch Gestures
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         sceneView.addGestureRecognizer(tapGesture)
         
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-        sceneView.addGestureRecognizer(panGesture)
         panGesture.minimumNumberOfTouches = 1
         panGesture.maximumNumberOfTouches = 2
+        sceneView.addGestureRecognizer(panGesture)
+
+        longPressGesture.minimumPressDuration = 1.5
+        sceneView.addGestureRecognizer(longPressGesture)
+        longPressGesture.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -249,11 +256,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let translation = sender.translation(in: view)
         
         if sender.numberOfTouches == 1 {
-            // move on xy plane
             if sender.state == .changed {
-                // update position
-                print("Changing on xy plane")
-                print("Velocity: \(velocity), Translation: \(translation)")
+                if panningWithLongPress {
+                    // move along z axis
+                } else {
+                    // move on xy plane
+                    print("Changing on xy plane")
+                    print("Velocity: \(velocity), Translation: \(translation)")
+                }
                 
             }
         } else {
@@ -266,6 +276,22 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             }
         }
         
+        if sender.state == .ended {
+            panningWithLongPress = false
+        }
+    }
+    
+    @objc func handleLongPress(sender: UILongPressGestureRecognizer) {
+        if selectedNode == nil { return }
         
+        print("Long Pressed")
+    }
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer == longPressGesture && otherGestureRecognizer == panGesture {
+            panningWithLongPress = true
+            return true
+        }
+        return false
     }
 }
