@@ -59,6 +59,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Touch Gestures
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         sceneView.addGestureRecognizer(tapGesture)
+        
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        sceneView.addGestureRecognizer(panGesture)
+        panGesture.minimumNumberOfTouches = 1
+        panGesture.maximumNumberOfTouches = 2
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -124,13 +129,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     @IBAction func addButtonPressed(_ sender: UIButton) {
         if !originSet { return }
+        if objCount > MAXIMUM_OBJECT_NUMBER { return }
         
         let newNode = SCNNode()
         newNode.geometry = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.1)
         newNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
         newNode.position = SCNVector3(0, 0, 0)
         
-        let newObj = object(name: "\(objCount++)", geomeryType: "Box")
+        let newObj = object(name: "\(objCount)", geomeryType: "Box")
+        objCount += 1
         saveData(newObj)
         
         sceneView.scene.rootNode.addChildNode(newNode)
@@ -232,5 +239,33 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 selectedNode = resultNode
             }
         }
+    }
+    
+    @objc func handlePan(sender: UIPanGestureRecognizer) {
+        if selectedNode == nil { return }
+        
+//        let location = sender.location(in: view)
+        let velocity = sender.velocity(in: view)
+        let translation = sender.translation(in: view)
+        
+        if sender.numberOfTouches == 1 {
+            // move on xy plane
+            if sender.state == .changed {
+                // update position
+                print("Changing on xy plane")
+                print("Velocity: \(velocity), Translation: \(translation)")
+                
+            }
+        } else {
+            // rotate along x-axis(up/down) & y-axis(left/right)
+            if sender.state == .changed {
+                // update angle
+                print("Rotating along axis")
+                print("Velocity: \(velocity), Translation: \(translation)")
+                
+            }
+        }
+        
+        
     }
 }
