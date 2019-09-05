@@ -10,11 +10,13 @@ import Foundation
 import RealmSwift
 
 class object: Object {
-    convenience init(geomeryType: String) {
+    convenience init(name: String, geomeryType: String) {
         self.init()
+        self.name = name
         self.geoType = geomeryType
     }
     
+    @objc dynamic var name: String = ""
     @objc dynamic var geoType: String = ""
     @objc dynamic var x: Double = 0.0
     @objc dynamic var y: Double = 0.0

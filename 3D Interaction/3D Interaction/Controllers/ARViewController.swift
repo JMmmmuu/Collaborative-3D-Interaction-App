@@ -15,12 +15,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     var objects: Results<object>?
     let realm = try! Realm()
-    var selectedObject: object?
     var originSet: Bool = false
+    let MAXIMUM_OBJECT_NUMBER: Int = 30
+    var objCount: Int = 0       // identifier for each object
     
     var selectedRoom: roomInfo? {
         willSet {
             self.navigationItem.title = newValue?.title
+        }
+    }
+    var selectedObject: object?
+    var selectedNode: SCNNode? {
+        willSet {
+            // update selectedObject when node is selected at tapGestureRecognizer
+            for obj in selectedRoom!.objects {
+                if let node = newValue {
+                    if obj.name == node.name {
+                        selectedObject = obj
+                    }
+                }
+            }
         }
     }
 
@@ -116,7 +130,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         newNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
         newNode.position = SCNVector3(0, 0, 0)
         
-        let newObj = object(geomeryType: "Box")
+        let newObj = object(name: "\(objCount++)", geomeryType: "Box")
         saveData(newObj)
         
         sceneView.scene.rootNode.addChildNode(newNode)
@@ -205,12 +219,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         } else {
             // Tap proper object
             // check whether the object is already selected
-            
-            // if there's selected object, and tap the other object, then deselect it
-            
-            // no selected object, then select it
-            let results = hitTest.first!
-            //selectedObject = results.node
+            let resultNode = hitTest.first!.node
+            if selectedNode != nil {
+                // if there's selected object, and tap the other object, then deselect it
+                if selectedNode == resultNode {
+                    selectedNode = nil
+                } else {
+                    selectedNode = resultNode
+                }
+            } else {
+                // no selected object, then select it
+                selectedNode = resultNode
+            }
         }
     }
 }
