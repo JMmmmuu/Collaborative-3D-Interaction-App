@@ -75,7 +75,8 @@ class TableViewController: SwipeTableViewController {
         let destinationVC = segue.destination as! ViewController
         
         if let indexPath = tableView.indexPathForSelectedRow {
-            destinationVC.roomTitle = rooms?[indexPath.row].title ?? ""
+            destinationVC.selectedRoom = rooms?[indexPath.row]
+            //destinationVC.roomTitle = rooms?[indexPath.row].title ?? ""
         }
     }
 

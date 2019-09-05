@@ -17,11 +17,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let realm = try! Realm()
     var selectedObject: object?
     
-    var roomTitle: String = ""{
+    var selectedRoom: roomInfo? {
         willSet {
-            self.navigationItem.title = newValue
+            self.navigationItem.title = newValue?.title
         }
     }
+
 
     @IBOutlet var sceneView: ARSCNView!
     
@@ -129,12 +130,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func saveData(_ objectToAdd: object) {
-        do {
-            try realm.write {
-                realm.add(objectToAdd)
+        if let room = selectedRoom {
+            do {
+                try realm.write {
+                    realm.add(objectToAdd)
+                    room.objects.append((objectToAdd))
+                }
+            } catch {
+                print("Error saving context: \(error)")
             }
-        } catch {
-            print("Error saving context: \(error)")
         }
     }
     
