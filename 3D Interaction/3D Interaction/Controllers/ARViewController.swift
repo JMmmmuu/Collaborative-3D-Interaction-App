@@ -16,6 +16,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var objects: Results<object>?
     let realm = try! Realm()
     var selectedObject: object?
+    var originSet: Bool = false
     
     var selectedRoom: roomInfo? {
         willSet {
@@ -79,6 +80,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             // Show Debug Options selected
             sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
             print("Iamge Detected")
+            originSet = true
             
             
 //            let plane = SCNPlane()
@@ -109,6 +111,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     
     @IBAction func addButtonPressed(_ sender: UIButton) {
+        if !originSet { return }
+        
         let newNode = SCNNode()
         newNode.geometry = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.1)
         newNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
@@ -118,7 +122,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         saveData(newObj)
         
         sceneView.scene.rootNode.addChildNode(newNode)
-        
     }
     
     // MARK: - Realm Data Manipulation
