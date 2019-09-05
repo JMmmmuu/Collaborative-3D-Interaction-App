@@ -40,13 +40,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 //        // Show Debug Options selected
 //        sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
         
-        // Create a new scene
-//        let scene = SCNScene(named: "art.scnassets/ship.scn")!
-        
-        // Set the scene to the view
-//        sceneView.scene = scene
-        
         sceneView.autoenablesDefaultLighting = true
+        
+        // Touch Gestures
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        sceneView.addGestureRecognizer(tapGesture)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -189,6 +187,30 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             }
         } catch {
             print("Error occured updating data: \(error)")
+        }
+    }
+    
+    // MARK: - Touch Gestures
+    @objc func handleTap(sender: UITapGestureRecognizer) {
+        print("Tap Detected")
+        
+        let areaTapped = sender.view as! SCNView
+        let tappedCoordinates = sender.location(in: areaTapped)
+        let hitTest = areaTapped.hitTest(tappedCoordinates)
+        
+        if hitTest.isEmpty {
+            print("There's no object tapped")
+            
+            // if there's selected object, deselect it
+        } else {
+            // Tap proper object
+            // check whether the object is already selected
+            
+            // if there's selected object, and tap the other object, then deselect it
+            
+            // no selected object, then select it
+            let results = hitTest.first!
+            //selectedObject = results.node
         }
     }
 }
