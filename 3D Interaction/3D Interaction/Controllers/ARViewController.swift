@@ -126,7 +126,27 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         objects = realm.objects(object.self)
         
         // place objects on the ARWorld
-        
+        if let Objects = objects {
+            for obj in Objects {
+                let node = SCNNode()
+                
+                // Shape & Scale
+                let size: CGFloat = CGFloat(0.1 * obj.scale)
+                node.geometry = SCNBox(
+                width: size, height: size,
+                length: size, chamferRadius: size)
+                
+                // Rotation Angle
+                node.eulerAngles = SCNVector3(obj.angleAtOrigin_x, obj.angleAtOrigin_y, obj.angleAtOrigin_z)
+                
+                // Position
+                node.position = SCNVector3(obj.x, obj.y, obj.z)
+                
+                
+                sceneView.scene.rootNode.addChildNode(node)
+            }
+            
+        }
     }
     
     func saveData(_ objectToAdd: object) {
