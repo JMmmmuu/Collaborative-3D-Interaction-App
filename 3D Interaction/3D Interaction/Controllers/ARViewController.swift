@@ -15,11 +15,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     var objects: Results<object>?
     let realm = try! Realm()
+    var selectedObject: object?
 
     @IBOutlet var sceneView: ARSCNView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadData()
         
         // Set the view's delegate
         sceneView.delegate = self
@@ -69,6 +71,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         if anchor is ARImageAnchor {
             // Show Debug Options selected
             sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
+            print("Iamge Detected")
+            
             
 //            let plane = SCNPlane()
 //
@@ -98,13 +102,24 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     
     @IBAction func addButtonPressed(_ sender: UIButton) {
-//        let newNode = SCNNode()
+        let newNode = SCNNode()
+        newNode.geometry = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.1)
+        newNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+        newNode.position = SCNVector3(0, 0, 0)
+        
+        let newObj = object(geomeryType: "Box")
+        saveData(newObj)
+        
+        sceneView.scene.rootNode.addChildNode(newNode)
         
     }
     
     // MARK: - Realm Data Manipulation
     func loadData() {
         objects = realm.objects(object.self)
+        
+        // place objects on the ARWorld
+        
     }
     
     func saveData(_ objectToAdd: object) {
@@ -114,6 +129,33 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             }
         } catch {
             print("Error saving context: \(error)")
+        }
+    }
+    
+    func deleteData(_ objToDelete: object) {
+        do {
+            try realm.write {
+                realm.delete(objToDelete)
+            }
+        } catch {
+            print("Error occured deleting data: \(error)")
+        }
+    }
+    
+    func updateData(with objToUpdate: object) {
+        guard let changeTo = selectedObject else { return }
+        do {
+            try realm.write {
+                objToUpdate.x = changeTo.x
+                objToUpdate.y = changeTo.y
+                objToUpdate.z = changeTo.z
+                
+                objToUpdate.angleAtOrigin_x = changeTo.angleAtOrigin_x
+                objToUpdate.angleAtOrigin_y = changeTo.angleAtOrigin_y
+                objToUpdate.angleAtOrigin_z = changeTo.angleAtOrigin_z
+            }
+        } catch {
+            print("Error occured updating data: \(error)")
         }
     }
 }

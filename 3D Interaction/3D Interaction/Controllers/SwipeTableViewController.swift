@@ -34,6 +34,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         }
         
         if let img = UIImage(named: "trash-circle") {
+            // resize img
             let render = UIGraphicsImageRenderer(size: CGSize(width: 33, height: 33))
             deleteAction.image = render.image { (context) in
                 img.draw(in: CGRect(origin: .zero, size: CGSize(width: 33, height: 33)))
