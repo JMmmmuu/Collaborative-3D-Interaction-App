@@ -38,9 +38,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         }
     }
 
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-    let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-    let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
     var panningWithLongPress: Bool = false
 
     @IBOutlet var sceneView: ARSCNView!
@@ -62,15 +59,21 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         
         
         // Touch Gestures
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         sceneView.addGestureRecognizer(tapGesture)
         
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         panGesture.minimumNumberOfTouches = 1
         panGesture.maximumNumberOfTouches = 2
         sceneView.addGestureRecognizer(panGesture)
-
+        
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         longPressGesture.minimumPressDuration = 1.5
         sceneView.addGestureRecognizer(longPressGesture)
         longPressGesture.delegate = self
+        
+        let rotationGesture = UIRotationGestureRecognizer(target: self, action: #selector(handleRotation))
+        sceneView.addGestureRecognizer(rotationGesture)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -219,6 +222,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     }
     
     // MARK: - Touch Gestures
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer is UILongPressGestureRecognizer && otherGestureRecognizer is UIPanGestureRecognizer {
+            panningWithLongPress = true
+            return true
+        }
+        return false
+    }
+    
     @objc func handleTap(sender: UITapGestureRecognizer) {
         print("Tap Detected")
         
@@ -251,9 +262,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     @objc func handlePan(sender: UIPanGestureRecognizer) {
         if selectedNode == nil { return }
         
-//        let location = sender.location(in: view)
+//        let location = sender.location(in: view)  // of where touch started
         let velocity = sender.velocity(in: view)
-        let translation = sender.translation(in: view)
+        let translation = sender.translation(in: view)  // How far the pan gesture moves in the x-, y- axes of screen
         
         if sender.numberOfTouches == 1 {
             if sender.state == .changed {
@@ -264,7 +275,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
                     print("Changing on xy plane")
                     print("Velocity: \(velocity), Translation: \(translation)")
                 }
-                
             }
         } else {
             // rotate along x-axis(up/down) & y-axis(left/right)
@@ -287,11 +297,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         print("Long Pressed")
     }
 
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer == longPressGesture && otherGestureRecognizer == panGesture {
-            panningWithLongPress = true
-            return true
-        }
-        return false
+    @objc func handleRotation(sender: UIRotationGestureRecognizer) {
+        if selectedNode == nil { return }
+        
+        // rotate object along z-axis
+        let rotation = sender.rotation
+        let velocity = sender.velocity
+        
+        print("rotation: \(rotation), velocity: \(velocity)")
     }
+    
+    
 }
