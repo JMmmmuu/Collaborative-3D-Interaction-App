@@ -74,6 +74,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         
         let rotationGesture = UIRotationGestureRecognizer(target: self, action: #selector(handleRotation))
         sceneView.addGestureRecognizer(rotationGesture)
+        
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch))
+        sceneView.addGestureRecognizer(pinchGesture)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -304,8 +307,21 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         let rotation = sender.rotation
         let velocity = sender.velocity
         
-        print("rotation: \(rotation), velocity: \(velocity)")
+        if sender.state == .changed {
+            print("rotation: \(rotation), velocity: \(velocity)")
+        }
     }
     
+    @objc func handlePinch(sender: UIPinchGestureRecognizer) {
+        if selectedNode == nil { return }
+        
+        // pinch in/ out to scale the object
+        let scale = sender.scale
+        let velocity = sender.velocity
+        
+        if sender.state == .changed {
+            print("scale: \(scale), velocity: \(velocity)")
+        }
+    }
     
 }
