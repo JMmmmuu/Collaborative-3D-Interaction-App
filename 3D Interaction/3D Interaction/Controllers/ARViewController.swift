@@ -230,13 +230,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         }
     }
     
+    
+    
     // MARK: - Touch Gestures
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer is UILongPressGestureRecognizer && otherGestureRecognizer is UIPanGestureRecognizer {
-            panningWithLongPress = true
+            print("hahahah")
             return true
         }
-        panningWithLongPress = false
         return false
     }
     
@@ -248,9 +249,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         let hitTest = areaTapped.hitTest(tappedCoordinates)
         
         if hitTest.isEmpty {
-            print("There's no object tapped")
-            
             // if there's selected object, deselect it
+            print("There's no object tapped")
+            selectedNode = nil
         } else {
             // Tap proper object
             // check whether the object is already selected
@@ -273,66 +274,49 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     var y_previous: CGFloat = 0
     @objc func handlePan(sender: UIPanGestureRecognizer) {
 //        print("Pan Detected")
-        if selectedNode == nil { return }
+        guard let selected = selectedNode else { return }
         
 //        let location = sender.location(in: view)  // of where touch started
-        let velocity = sender.velocity(in: view)
         let translation = sender.translation(in: view)  // How far the pan gesture moves in the x-, y- axes of screen
         
-//        print("Velocity: \(velocity), Translation: \(translation)")
 
-        
         if sender.state == .began {
             print("started")
             x_previous = translation.x
             y_previous = translation.y
         } else if sender.state == .changed {
-            var x_changed: CGFloat = 0
-            var y_changed: CGFloat = 0
+            let x_changed = translation.x - x_previous
+            let y_changed = translation.y - y_previous
+            print("\(x_changed), \(y_changed)")
+            
             if sender.numberOfTouches == 1 {
-                print("Changing on xy plane")
-//                print("Velocity: \(velocity), Translation: \(translation)")
-                print("\(x_changed), \(y_changed)")
-                x_changed = translation.x - x_previous
-                y_changed = translation.y - y_previous
-                selectedNode?.localTranslate(by: SCNVector3(x_changed / 10000, -y_changed / 10000, 0))
+                if panningWithLongPress {
+                    // move along z axis
+                    print("Moving on z-axis")
+                    selected.localTranslate(by: SCNVector3(0, 0, x_changed / 10000))
+                } else {
+                    // move on xy plane
+                    if sender.numberOfTouches == 1 {
+                        print("Moving on xy plane")
+                        selected.localTranslate(by: SCNVector3(x_changed / 10000, -y_changed / 10000, 0))
+                    }
+                }
+            } else {
+                // rotate along x-axis(up/down) & y-axis(left/right)
+                print("Rotating along x-, y-axis")
             }
-        }
-//        if sender.numberOfTouches == 1 {
-//            if sender.state == .changed {
-//                if panningWithLongPress {
-//                    // move along z axis
-//                    print("1")
-//                    selectedNode?.localTranslate(by: SCNVector3(0, 0, x_changed / 100))
-//                } else {
-//                    // move on xy plane
-//                    print("2")
-//                    print("Changing on xy plane")
-//                    print("Velocity: \(velocity), Translation: \(translation)")
-//                    selectedNode?.localTranslate(by: SCNVector3(x_changed / 100, y_changed / 100, 0))
-//                }
-//            }
-//        } else {
-//            // rotate along x-axis(up/down) & y-axis(left/right)
-//            if sender.state == .changed {
-//                // update angle
-//                print("3")
-//                print("Rotating along axis")
-//                print("Velocity: \(velocity), Translation: \(translation)")
-//
-//            }
-//        }
-        
-        if sender.state == .ended {
-            panningWithLongPress = false
         }
     }
     
     @objc func handleLongPress(sender: UILongPressGestureRecognizer) {
         print("LongPress Detected")
         if selectedNode == nil { return }
-        
-        print("Long Pressed")
+        if sender.state == .began {
+            print("Long Pressed")
+            panningWithLongPress = true
+        } else if sender.state == .ended {
+            panningWithLongPress = false
+        }
     }
 
     @objc func handleRotation(sender: UIRotationGestureRecognizer) {
@@ -348,16 +332,28 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         }
     }
     
+    var scale_previous: CGFloat = 0
+    let MIN_SCALE: Float = 0.01
+    let MAX_SCALE: Float = 10
     @objc func handlePinch(sender: UIPinchGestureRecognizer) {
         print("Pinch Detected")
-        if selectedNode == nil { return }
+        guard let selected = selectedNode else { return }
         
         // pinch in/ out to scale the object
         let scale = sender.scale
-        let velocity = sender.velocity
         
+        if sender.state == .began {
+            scale_previous = scale
+        }
         if sender.state == .changed {
-            print("scale: \(scale), velocity: \(velocity)")
+            let changed_scale = Float(scale - scale_previous) / 10000
+            var willChnge = selected.scale.x + changed_scale
+            if willChnge < MIN_SCALE {
+                willChnge = MIN_SCALE
+            } else if willChnge > MAX_SCALE {
+                willChnge = MAX_SCALE
+            }
+            selected.scale = SCNVector3(willChnge, willChnge, willChnge)
         }
     }
     
