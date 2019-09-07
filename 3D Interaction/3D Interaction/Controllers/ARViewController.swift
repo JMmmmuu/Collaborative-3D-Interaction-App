@@ -53,7 +53,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         sceneView.showsStatistics = true
         
 //        // Show Debug Options selected
-//        sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
+        sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
+        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         
         sceneView.autoenablesDefaultLighting = true
         
@@ -83,10 +84,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         super.viewWillAppear(animated)
         
         // Create a session configuration
-        let configuration = ARImageTrackingConfiguration()
+//        let configuration = ARImageTrackingConfiguration()
+        let configuration = ARWorldTrackingConfiguration()
 
         if let imgToTrack = ARReferenceImage.referenceImages(inGroupNamed: "Recognition", bundle: Bundle.main) {
-            configuration.trackingImages = imgToTrack
+            configuration.detectionImages = imgToTrack
+//            configuration.trackingImages = imgToTrack
             configuration.maximumNumberOfTrackedImages = 1
         }
         
@@ -141,8 +144,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     
     
     @IBAction func addButtonPressed(_ sender: UIButton) {
-        if !originSet { return }
-        if objCount > MAXIMUM_OBJECT_NUMBER { return }
+        if !originSet {
+            print("No Origin")
+            return
+        }
+        if objCount > MAXIMUM_OBJECT_NUMBER {
+            print("Too many objects!")
+            return
+        }
         
         let newNode = SCNNode()
         newNode.geometry = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.1)
@@ -263,6 +272,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     }
     
     @objc func handlePan(sender: UIPanGestureRecognizer) {
+        print("Pan Detected")
         if selectedNode == nil { return }
         
 //        let location = sender.location(in: view)  // of where touch started
@@ -295,12 +305,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     }
     
     @objc func handleLongPress(sender: UILongPressGestureRecognizer) {
+        print("LongPress Detected")
         if selectedNode == nil { return }
         
         print("Long Pressed")
     }
 
     @objc func handleRotation(sender: UIRotationGestureRecognizer) {
+        print("Rotation Detected")
         if selectedNode == nil { return }
         
         // rotate object along z-axis
@@ -313,6 +325,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     }
     
     @objc func handlePinch(sender: UIPinchGestureRecognizer) {
+        print("Pinch Detected")
         if selectedNode == nil { return }
         
         // pinch in/ out to scale the object
