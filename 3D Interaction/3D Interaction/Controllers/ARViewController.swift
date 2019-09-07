@@ -348,14 +348,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         }
         if sender.state == .changed {
             let changed_scale = Float(scale - scale_previous) / 50
-            var willChnge = selected.scale.x + changed_scale
-            if willChnge < MIN_SCALE {
-                willChnge = MIN_SCALE
-            } else if willChnge > MAX_SCALE {
-                willChnge = MAX_SCALE
+            var willChange = selected.scale.x + changed_scale
+            if willChange < MIN_SCALE {
+                willChange = MIN_SCALE
+            } else if willChange > MAX_SCALE {
+                willChange = MAX_SCALE
             }
-            print(willChnge)
-            selected.scale = SCNVector3(willChnge, willChnge, willChnge)
+            print(willChange)
+            selected.scale = SCNVector3(willChange, willChange, willChange)
         }
     }
     
