@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>371676916101-h2qkahol3ecjimq6b8ie0t2kpjake5ea.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.371676916101-h2qkahol3ecjimq6b8ie0t2kpjake5ea</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDSSllMbSeI7E68JAs-kalTwpLsyQZvxk4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>371676916101</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.JMmmmuu.-D-Interaction</string>
+	<key>PROJECT_ID</key>
+	<string>d-interaction</string>
+	<key>STORAGE_BUCKET</key>
+	<string>d-interaction.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:371676916101:ios:f04c3fd39794c3249ffcec</string>
+	<key>DATABASE_URL</key>
+	<string>https://d-interaction.firebaseio.com</string>
+</dict>
+</plist>

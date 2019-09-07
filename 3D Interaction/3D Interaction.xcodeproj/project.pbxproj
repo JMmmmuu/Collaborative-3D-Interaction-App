@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		48A2A0B7E495B21EE3E4AC5B /* Pods_3D_Interaction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DB99B4FD14FECFDFF5B54D6 /* Pods_3D_Interaction.framework */; };
 		5363C5BF231FC42C004F40E0 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5363C5BE231FC42C004F40E0 /* SwipeTableViewController.swift */; };
+		53E55F92232341FA00571FB9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 53E55F91232341FA00571FB9 /* GoogleService-Info.plist */; };
 		53EDC874231E39E90080FF0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EDC873231E39E90080FF0B /* AppDelegate.swift */; };
 		53EDC876231E39E90080FF0B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 53EDC875231E39E90080FF0B /* art.scnassets */; };
 		53EDC878231E39E90080FF0B /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EDC877231E39E90080FF0B /* ARViewController.swift */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		5363C5BE231FC42C004F40E0 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
+		53E55F91232341FA00571FB9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		53EDC870231E39E90080FF0B /* 3D Interaction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "3D Interaction.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53EDC873231E39E90080FF0B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		53EDC875231E39E90080FF0B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				53EDC887231E39F20080FF0B /* Controllers */,
 				5363C5BD231F99F4004F40E0 /* Supporting Files */,
 				53EDC881231E39EA0080FF0B /* Info.plist */,
+				53E55F91232341FA00571FB9 /* GoogleService-Info.plist */,
 			);
 			path = "3D Interaction";
 			sourceTree = "<group>";
@@ -194,6 +197,7 @@
 			files = (
 				53EDC876231E39E90080FF0B /* art.scnassets in Resources */,
 				53EDC880231E39EA0080FF0B /* LaunchScreen.storyboard in Resources */,
+				53E55F92232341FA00571FB9 /* GoogleService-Info.plist in Resources */,
 				53EDC87D231E39EA0080FF0B /* Assets.xcassets in Resources */,
 				53EDC87B231E39E90080FF0B /* Main.storyboard in Resources */,
 			);
