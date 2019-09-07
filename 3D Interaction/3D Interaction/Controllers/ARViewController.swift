@@ -236,6 +236,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
             panningWithLongPress = true
             return true
         }
+        panningWithLongPress = false
         return false
     }
     
@@ -268,34 +269,59 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         }
     }
     
+    var x_previous: CGFloat = 0
+    var y_previous: CGFloat = 0
     @objc func handlePan(sender: UIPanGestureRecognizer) {
-        print("Pan Detected")
+//        print("Pan Detected")
         if selectedNode == nil { return }
         
 //        let location = sender.location(in: view)  // of where touch started
         let velocity = sender.velocity(in: view)
         let translation = sender.translation(in: view)  // How far the pan gesture moves in the x-, y- axes of screen
         
-        print(sender.state)
-        if sender.numberOfTouches == 1 {
-            if sender.state == .changed {
-                if panningWithLongPress {
-                    // move along z axis
-                } else {
-                    // move on xy plane
-                    print("Changing on xy plane")
-                    print("Velocity: \(velocity), Translation: \(translation)")
-                }
-            }
-        } else {
-            // rotate along x-axis(up/down) & y-axis(left/right)
-            if sender.state == .changed {
-                // update angle
-                print("Rotating along axis")
-                print("Velocity: \(velocity), Translation: \(translation)")
-                
+//        print("Velocity: \(velocity), Translation: \(translation)")
+
+        
+        if sender.state == .began {
+            print("started")
+            x_previous = translation.x
+            y_previous = translation.y
+        } else if sender.state == .changed {
+            var x_changed: CGFloat = 0
+            var y_changed: CGFloat = 0
+            if sender.numberOfTouches == 1 {
+                print("Changing on xy plane")
+//                print("Velocity: \(velocity), Translation: \(translation)")
+                print("\(x_changed), \(y_changed)")
+                x_changed = translation.x - x_previous
+                y_changed = translation.y - y_previous
+                selectedNode?.localTranslate(by: SCNVector3(x_changed / 10000, -y_changed / 10000, 0))
             }
         }
+//        if sender.numberOfTouches == 1 {
+//            if sender.state == .changed {
+//                if panningWithLongPress {
+//                    // move along z axis
+//                    print("1")
+//                    selectedNode?.localTranslate(by: SCNVector3(0, 0, x_changed / 100))
+//                } else {
+//                    // move on xy plane
+//                    print("2")
+//                    print("Changing on xy plane")
+//                    print("Velocity: \(velocity), Translation: \(translation)")
+//                    selectedNode?.localTranslate(by: SCNVector3(x_changed / 100, y_changed / 100, 0))
+//                }
+//            }
+//        } else {
+//            // rotate along x-axis(up/down) & y-axis(left/right)
+//            if sender.state == .changed {
+//                // update angle
+//                print("3")
+//                print("Rotating along axis")
+//                print("Velocity: \(velocity), Translation: \(translation)")
+//
+//            }
+//        }
         
         if sender.state == .ended {
             panningWithLongPress = false
