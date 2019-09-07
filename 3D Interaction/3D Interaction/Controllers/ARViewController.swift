@@ -336,23 +336,25 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     let MIN_SCALE: Float = 0.01
     let MAX_SCALE: Float = 10
     @objc func handlePinch(sender: UIPinchGestureRecognizer) {
-        print("Pinch Detected")
+//        print("Pinch Detected")
         guard let selected = selectedNode else { return }
         
         // pinch in/ out to scale the object
         let scale = sender.scale
+        print(scale)
         
         if sender.state == .began {
             scale_previous = scale
         }
         if sender.state == .changed {
-            let changed_scale = Float(scale - scale_previous) / 10000
+            let changed_scale = Float(scale - scale_previous) / 50
             var willChnge = selected.scale.x + changed_scale
             if willChnge < MIN_SCALE {
                 willChnge = MIN_SCALE
             } else if willChnge > MAX_SCALE {
                 willChnge = MAX_SCALE
             }
+            print(willChnge)
             selected.scale = SCNVector3(willChnge, willChnge, willChnge)
         }
     }
