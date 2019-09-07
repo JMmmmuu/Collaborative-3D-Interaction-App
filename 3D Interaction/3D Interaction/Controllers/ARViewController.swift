@@ -45,7 +45,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadData()
+        //loadData()
         
         // Set the view's delegate
         sceneView.delegate = self
@@ -104,9 +104,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     }
 
     // MARK: - ARSCNViewDelegate
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
+    var imgAnchor: ARAnchor?
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         if anchor is ARImageAnchor {
             // Show Debug Options selected
             print("Iamge Detected")
@@ -115,11 +114,25 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
             sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
             print(anchor.transform)
             anchorTransform = anchor.transform
-            
+            imgAnchor = anchor
         }
-        
-        return node
     }
+//    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+//        let node = SCNNode()
+//
+//        if anchor is ARImageAnchor {
+//            // Show Debug Options selected
+//            print("Iamge Detected")
+//            originSet = true
+//
+//            sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
+//            print(anchor.transform)
+//            anchorTransform = anchor.transform
+//            imgAnchor = anchor
+//        }
+//
+//        return node
+//    }
 
     
     func session(_ session: ARSession, didFailWithError error: Error) {
@@ -149,7 +162,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         }
         
         let newNode = SCNNode()
-        newNode.geometry = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.1)
+        newNode.geometry = SCNPyramid(width: 0.1, height: 0.1, length: 0.1)  //SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.1)
         newNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
         newNode.position = SCNVector3(0, 0, 0)
         newNode.simdLocalTranslate(by: simd_make_float3((anchorTransform?.columns.3)!))
@@ -159,6 +172,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         objCount += 1
         saveData(newObj)
         
+//        imgAnchor.addChildNode(newNode)
         sceneView.scene.rootNode.addChildNode(newNode)
     }
     
@@ -285,8 +299,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
             x_previous = translation.x
             y_previous = translation.y
         } else if sender.state == .changed {
-            let x_changed = translation.x - x_previous
-            let y_changed = translation.y - y_previous
+            let x_changed = Float(translation.x - x_previous)
+            let y_changed = Float(translation.y - y_previous)
             print("\(x_changed), \(y_changed)")
             
             if sender.numberOfTouches == 1 {
@@ -304,6 +318,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
             } else {
                 // rotate along x-axis(up/down) & y-axis(left/right)
                 print("Rotating along x-, y-axis")
+                selected.eulerAngles = SCNVector3(y_changed / 30, x_changed / 30, 0)
             }
         }
     }
@@ -321,7 +336,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
 
     @objc func handleRotation(sender: UIRotationGestureRecognizer) {
         print("Rotation Detected")
-        if selectedNode == nil { return }
+        guard let selected = selectedNode else { return }
         
         // rotate object along z-axis
         let rotation = sender.rotation
@@ -329,6 +344,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         
         if sender.state == .changed {
             print("rotation: \(rotation), velocity: \(velocity)")
+            selected.eulerAngles = SCNVector3(0, 0, rotation)
         }
     }
     
