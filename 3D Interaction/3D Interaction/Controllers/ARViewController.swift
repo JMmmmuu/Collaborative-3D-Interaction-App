@@ -39,6 +39,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     }
 
     var panningWithLongPress: Bool = false
+    var anchorTransform: simd_float4x4?
 
     @IBOutlet var sceneView: ARSCNView!
     
@@ -53,7 +54,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         sceneView.showsStatistics = true
         
 //        // Show Debug Options selected
-        sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         
         sceneView.autoenablesDefaultLighting = true
@@ -80,16 +80,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         sceneView.addGestureRecognizer(pinchGesture)
     }
     
+    
+    let configuration = ARWorldTrackingConfiguration()
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Create a session configuration
-//        let configuration = ARImageTrackingConfiguration()
-        let configuration = ARWorldTrackingConfiguration()
 
         if let imgToTrack = ARReferenceImage.referenceImages(inGroupNamed: "Recognition", bundle: Bundle.main) {
             configuration.detectionImages = imgToTrack
-//            configuration.trackingImages = imgToTrack
             configuration.maximumNumberOfTrackedImages = 1
         }
         
@@ -105,22 +104,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     }
 
     // MARK: - ARSCNViewDelegate
-    
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         let node = SCNNode()
      
         if anchor is ARImageAnchor {
             // Show Debug Options selected
-            sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
             print("Iamge Detected")
             originSet = true
             
+            sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
+            print(anchor.transform)
+            anchorTransform = anchor.transform
             
-//            let plane = SCNPlane()
-//
-//            let planeNode = SCNNode()
-//            planeNode.eulerAngles.x = -.pi / 2
-//            node.addChildNode(planeNode)
         }
         
         return node
@@ -157,6 +152,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         newNode.geometry = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.1)
         newNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
         newNode.position = SCNVector3(0, 0, 0)
+        newNode.simdLocalTranslate(by: simd_make_float3((anchorTransform?.columns.3)!))
+        //print(anchorTransform?.columns.3)
         
         let newObj = object(name: "\(objCount)", geomeryType: "Box")
         objCount += 1
@@ -279,6 +276,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         let velocity = sender.velocity(in: view)
         let translation = sender.translation(in: view)  // How far the pan gesture moves in the x-, y- axes of screen
         
+        print(sender.state)
         if sender.numberOfTouches == 1 {
             if sender.state == .changed {
                 if panningWithLongPress {
