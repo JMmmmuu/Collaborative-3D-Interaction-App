@@ -66,6 +66,14 @@
                                     <action selector="addButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="oyR-fW-Ws6"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nEM-va-aDK">
+                                <rect key="frame" x="299" y="552" width="43" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="delete"/>
+                                <connections>
+                                    <action selector="deleteButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="qQS-fD-wNE"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -80,6 +88,8 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="C4R-ml-c93"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="button" destination="Gb9-5W-Pla" id="gdz-rU-eJm"/>
+                        <outlet property="deleteButton" destination="nEM-va-aDK" id="Vgt-EZ-570"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
                     </connections>
                 </viewController>

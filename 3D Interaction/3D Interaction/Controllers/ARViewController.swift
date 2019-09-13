@@ -10,6 +10,7 @@ import UIKit
 import SceneKit
 import ARKit
 import RealmSwift
+import Firebase
 
 class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDelegate {
     
@@ -42,6 +43,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     var anchorTransform: simd_float4x4?
 
     @IBOutlet var sceneView: ARSCNView!
+    @IBOutlet weak var deleteButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,12 +83,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     }
     
     
-    let configuration = ARWorldTrackingConfiguration()
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Create a session configuration
+        let configuration = ARWorldTrackingConfiguration()
 
+        configuration.planeDetection = [.horizontal]
         if let imgToTrack = ARReferenceImage.referenceImages(inGroupNamed: "Recognition", bundle: Bundle.main) {
             configuration.detectionImages = imgToTrack
             configuration.maximumNumberOfTrackedImages = 1
@@ -151,7 +154,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
     }
     
     
+    // MARK: - Add Node
     @IBAction func addButtonPressed(_ sender: UIButton) {
+//        guard let detectedImageAnchor = imgAnchor else { return }
         if !originSet {
             print("No Origin")
             return
@@ -176,45 +181,76 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
         sceneView.scene.rootNode.addChildNode(newNode)
     }
     
+    @IBAction func deleteButtonPressed(_ sender: UIButton) {
+        // delete seleted node
+        // only consider there's proper selected node to delete
+    }
+    
+    
     // MARK: - Realm Data Manipulation
     func loadData() {
-        objects = realm.objects(object.self)
+//        objects = realm.objects(object.self)
+//
+//        // place objects on the ARWorld
+//        if let Objects = objects {
+//            for obj in Objects {
+//                let node = SCNNode()
+//
+//                // Shape & Scale
+//                let size: CGFloat = CGFloat(0.1 * obj.scale)
+//                node.geometry = SCNBox(
+//                width: size, height: size,
+//                length: size, chamferRadius: size)
+//
+//                // Rotation Angle
+//                node.eulerAngles = SCNVector3(obj.angleAtOrigin_x, obj.angleAtOrigin_y, obj.angleAtOrigin_z)
+//
+//                // Position
+//                node.position = SCNVector3(obj.x, obj.y, obj.z)
+//
+//
+//                sceneView.scene.rootNode.addChildNode(node)
+//            }
+//
+//        }
         
-        // place objects on the ARWorld
-        if let Objects = objects {
-            for obj in Objects {
-                let node = SCNNode()
-                
-                // Shape & Scale
-                let size: CGFloat = CGFloat(0.1 * obj.scale)
-                node.geometry = SCNBox(
-                width: size, height: size,
-                length: size, chamferRadius: size)
-                
-                // Rotation Angle
-                node.eulerAngles = SCNVector3(obj.angleAtOrigin_x, obj.angleAtOrigin_y, obj.angleAtOrigin_z)
-                
-                // Position
-                node.position = SCNVector3(obj.x, obj.y, obj.z)
-                
-                
-                sceneView.scene.rootNode.addChildNode(node)
-            }
-            
-        }
+        /*
+        let objDB = Database.database().reference().child("objects")
+        
+        objDB.observe(.childAdded) { (snapshot) in
+            let snapShotValue = snapshot.value
+            print(snapShotValue)
+        }*/
+        
+        
+        
+        
+        
     }
     
     func saveData(_ objectToAdd: object) {
-        if let room = selectedRoom {
-            do {
-                try realm.write {
-                    realm.add(objectToAdd)
-                    room.objects.append((objectToAdd))
-                }
-            } catch {
-                print("Error saving context: \(error)")
-            }
-        }
+        // Save data to Realm
+//        if let room = selectedRoom {
+//            do {
+//                try realm.write {
+//                    realm.add(objectToAdd)
+//                    room.objects.append((objectToAdd))
+//                }
+//            } catch {
+//                print("Error saving context: \(error)")
+//            }
+//        }
+        
+        // Save data to the Firebase
+        // add child under "objects"
+        // find each room index, and save each data
+        // update timestamp in "rooms"
+        /*
+         let objDB = Database.database().reference().child("objects")
+
+        objDB.childByAutoId().setValue(<#T##value: Any?##Any?#>)*/
+        
+        
     }
     
     func deleteData(_ objToDelete: object) {
@@ -266,6 +302,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
             // if there's selected object, deselect it
             print("There's no object tapped")
             selectedNode = nil
+            deleteButton.isHidden = true
         } else {
             // Tap proper object
             // check whether the object is already selected
@@ -274,12 +311,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDe
                 // if there's selected object, and tap the other object, then deselect it
                 if selectedNode == resultNode {
                     selectedNode = nil
+                    deleteButton.isHidden = false
                 } else {
                     selectedNode = resultNode
+                    deleteButton.isHidden = true
                 }
             } else {
                 // no selected object, then select it
                 selectedNode = resultNode
+                deleteButton.isHidden = false
             }
         }
     }
